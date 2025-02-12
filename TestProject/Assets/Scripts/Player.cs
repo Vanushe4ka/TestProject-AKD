@@ -1,24 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using Zenject;
 using UnityEngine;
 using System;
 
 public class Player : MonoBehaviour, IDisposable
 {
-    public Transform cameraTransform;
-    public Rigidbody rigidbody;
-    [SerializeField] private LayerMask scanLayer;
-    [SerializeField] private float scanDistance = 10f;
-    [SerializeField] Transform pickUpPos;
-    IInterctiveObject pickedUpItem;
-    [Inject] IPickupMessage _pickupMessage;
+    [SerializeField] private Transform _cameraTransform;
+    [SerializeField] private LayerMask _scanLayer;
+    [SerializeField] private float _scanDistance = 10f;
+    [SerializeField] private LayerMask _groundLayer;
+    [SerializeField] private float _groundedHeigth = 2f;
+    [SerializeField] private Transform _pickUpPos;
+    [Inject] private IPickupMessage _pickupMessage;
+
+    private IInterctiveObject _pickedUpItem;
+
+    public Rigidbody Rigidbody { get; private set; }
+    public Transform CameraTransform => _cameraTransform;
+
     public bool IsGrounded()
     {
-        return true;
+        return (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, _groundedHeigth, _groundLayer));
     }
+
     void Start()
     {
+        Rigidbody = GetComponent<Rigidbody>();
         _pickupMessage.pickUp += OnPickUp;
         _pickupMessage.put += OnPut;
     }
@@ -28,28 +34,29 @@ public class Player : MonoBehaviour, IDisposable
         _pickupMessage.pickUp -= OnPickUp;
         _pickupMessage.put -= OnPut;
     }
+
     void Update()
     {
-        if (pickedUpItem != null)
+        if (_pickedUpItem != null)
         {
-            pickedUpItem.MoveTo(pickUpPos.position);
+            _pickedUpItem.MoveTo(_pickUpPos.position);
         }
         ScanEnvironment();
     }
 
     private void ScanEnvironment()
     {
-        Vector3 rayOrigin = cameraTransform.position;
-        Vector3 rayDirection = cameraTransform.forward;
-        RaycastHit hit;
-        if (Physics.Raycast(rayOrigin, rayDirection, out hit, scanDistance, scanLayer))
+        Vector3 rayOrigin = _cameraTransform.position;
+        Vector3 rayDirection = _cameraTransform.forward;
+
+        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, _scanDistance, _scanLayer))
         {
             IInterctiveObject obj = hit.collider.GetComponent<IInterctiveObject>();
             if (obj != null)
             {
-                _pickupMessage.ShowMessage(obj.GetName());
-                _pickupMessage.SetPos(Vector3.Lerp(cameraTransform.position, hit.point,0.75f));
-                _pickupMessage.SetRot(cameraTransform.rotation);
+                _pickupMessage.ShowMessage(obj.Name);
+                _pickupMessage.SetPos(Vector3.Lerp(_cameraTransform.position, hit.point,0.75f));
+                _pickupMessage.SetRot(_cameraTransform.rotation);
             }
             else
             {
@@ -64,19 +71,19 @@ public class Player : MonoBehaviour, IDisposable
 
     private void OnPickUp()
     {
-        if (pickedUpItem == null)
+        if (_pickedUpItem == null)
         {
-            Vector3 rayOrigin = cameraTransform.position;
-            Vector3 rayDirection = cameraTransform.forward;
-            RaycastHit hit;
-            if (Physics.Raycast(rayOrigin, rayDirection, out hit, scanDistance, scanLayer))
+            Vector3 rayOrigin = _cameraTransform.position;
+            Vector3 rayDirection = _cameraTransform.forward;
+            
+            if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, _scanDistance, _scanLayer))
             {
                 IInterctiveObject obj = hit.collider.GetComponent<IInterctiveObject>();
                 if (obj != null)
                 {
-                    pickedUpItem = obj;
-                    pickedUpItem.PickUp();
-                    _pickupMessage.ShowMessage(obj.GetName());
+                    _pickedUpItem = obj;
+                    _pickedUpItem.PickUp();
+                    _pickupMessage.ShowMessage(obj.Name);
                 }
             }
         }
@@ -84,21 +91,18 @@ public class Player : MonoBehaviour, IDisposable
 
     private void OnPut()
     {
-        if (pickedUpItem != null)
-        {
-            pickedUpItem.Put();
-            pickedUpItem = null;
-            _pickupMessage.HideMessage();
-        }
-    }
-    private void OnDrawGizmosSelected()
-    {
-        if (cameraTransform != null)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawRay(cameraTransform.position, cameraTransform.forward * scanDistance);
-        }
+        if (_pickedUpItem == null) return;
+
+        _pickedUpItem.Put();
+        _pickedUpItem = null;
+        _pickupMessage.HideMessage();
     }
 
-    
+    private void OnDrawGizmosSelected()
+    {
+        if (_cameraTransform == null) return;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(_cameraTransform.position, _cameraTransform.forward * _scanDistance);
+    }
 }

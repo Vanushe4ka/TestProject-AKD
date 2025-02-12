@@ -1,38 +1,40 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class DesktopPickupMessage : MonoBehaviour, IPickupMessage
 {
-    [SerializeField] Text _text;
+    [SerializeField] private Text _text;
 
     public event Action pickUp;
     public event Action put;
-    bool isPickedUp = false;
+
+    bool _isPickedUp = false;
+
     private void Start()
     {
         pickUp += OnPickUp;
         put += OnPut;
     }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (isPickedUp)
+            if (_isPickedUp)
             {
                 put.Invoke();
             }
             else
             {
-
                 pickUp.Invoke();
             }
         }
     }
+
     public void HideMessage()
     {
-        _text.text = "";
+        _text.text = string.Empty;
         gameObject.SetActive(false);
     }
 
@@ -49,23 +51,16 @@ public class DesktopPickupMessage : MonoBehaviour, IPickupMessage
     public void ShowMessage(string message)
     {
         gameObject.SetActive(true);
-        if (isPickedUp)
-        {
-            _text.text = "Press E to put " + message;
-        }
-        else
-        {
-            _text.text = "Press E to pick up " + message;
-        }
-    }
-    void OnPickUp()
-    {
-        isPickedUp = true;
-    }
-    void OnPut()
-    {
-        isPickedUp = false;
+        _text.text = (_isPickedUp ? "Press E to put " : "Press E to pick up ") + message;
     }
 
-    
+    void OnPickUp()
+    {
+        _isPickedUp = true;
+    }
+
+    void OnPut()
+    {
+        _isPickedUp = false;
+    }
 }

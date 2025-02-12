@@ -1537,7 +1537,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d0e2aee32b09c549bb248a1ca6d747c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Laptop
+  _name: laptop
   moveSpeed: 20
 --- !u!54 &1036367983
 Rigidbody:
@@ -2864,7 +2864,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b144ce371f5c33248a2414f324dd7fa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isMobileDevice: 1
+  _isMobileDevice: 0
   _playerPrefab: {fileID: 1143077722832757165, guid: ce4e05d7da398994bbd1a243900c267d, type: 3}
   _spawnPoint: {fileID: 623999546}
   _mobileInputPrefab: {fileID: 7743275841067253873, guid: 45aa77279f1dad243b907f1e4f2000b0, type: 3}
@@ -3140,7 +3140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d0e2aee32b09c549bb248a1ca6d747c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Book
+  _name: diary
   moveSpeed: 20
 --- !u!54 &1769986395
 Rigidbody:
@@ -3361,7 +3361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d0e2aee32b09c549bb248a1ca6d747c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Keypad
+  _name: keypad
   moveSpeed: 20
 --- !u!1 &2066391464
 GameObject:
@@ -3880,7 +3880,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d0e2aee32b09c549bb248a1ca6d747c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Box
+  _name: Box
   moveSpeed: 20
 --- !u!33 &33390894363697683
 MeshFilter:
@@ -3931,7 +3931,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d0e2aee32b09c549bb248a1ca6d747c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Axe
+  _name: Axe
   moveSpeed: 20
 --- !u!33 &33598101363175094
 MeshFilter:
@@ -3953,7 +3953,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d0e2aee32b09c549bb248a1ca6d747c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Ballon
+  _name: Ballon
   moveSpeed: 20
 --- !u!33 &33851880199971849
 MeshFilter:
@@ -3975,7 +3975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d0e2aee32b09c549bb248a1ca6d747c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Screwdriver
+  _name: Screwdriver
   moveSpeed: 20
 --- !u!1 &5627026862540748180
 GameObject:
@@ -4104,7 +4104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d0e2aee32b09c549bb248a1ca6d747c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Hammer
+  _name: Hammer
   moveSpeed: 20
 --- !u!23 &7494493581029819713
 MeshRenderer:
@@ -4233,5 +4233,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d0e2aee32b09c549bb248a1ca6d747c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Saw
+  _name: Saw
   moveSpeed: 20

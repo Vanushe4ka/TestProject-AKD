@@ -1,30 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class SimpleInteractiveObj : MonoBehaviour,IInterctiveObject
+public class SimpleInteractiveObj : MonoBehaviour, IInterctiveObject
 {
-    [SerializeField] string name;
-    Rigidbody rigidbody;
+    [SerializeField] string _name;
     [SerializeField] private float moveSpeed = 5f;
+
+    Rigidbody _rigidbody;
+
+    public string Name => _name;
+
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();
-    }
-    public string GetName()
-    {
-        return name;
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
     public void PickUp()
     {
-        rigidbody.useGravity = false;
+        _rigidbody.useGravity = false;
     }
 
     public void Put()
     {
-        rigidbody.velocity = Vector3.zero;
-        rigidbody.useGravity = true;
+        _rigidbody.velocity = Vector3.zero;
+        _rigidbody.useGravity = true;
     }
 
     public void MoveTo(Vector3 pos)
@@ -32,6 +30,6 @@ public class SimpleInteractiveObj : MonoBehaviour,IInterctiveObject
         Vector3 direction = (pos - transform.position).normalized;
         float distance = Vector3.Distance(transform.position, pos);
 
-        rigidbody.velocity = direction * moveSpeed * distance;
+        _rigidbody.velocity = direction * moveSpeed * distance;
     }
 }

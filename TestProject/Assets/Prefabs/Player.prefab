@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3487694803169868415}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: picedUpPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 1143077722497996214}
   - component: {fileID: 1143077722497996200}
   - component: {fileID: 1143077722497996201}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 1143077722832757175}
   - component: {fileID: 1143077722832757165}
   - component: {fileID: 1531268533275387959}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -246,13 +246,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b963a4b277979147b967ab005817f7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraTransform: {fileID: 1143077722497996214}
-  rigidbody: {fileID: 1143077722832757175}
-  scanLayer:
+  _cameraTransform: {fileID: 1143077722497996214}
+  _scanLayer:
     serializedVersion: 2
     m_Bits: 64
-  scanDistance: 10
-  pickUpPos: {fileID: 3487694803169868415}
+  _scanDistance: 10
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 119
+  _groundedHeigth: 1.5
+  _pickUpPos: {fileID: 3487694803169868415}
 --- !u!114 &1531268533275387959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,8 +268,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a164cbec3b92d9d439f25a71b229f34c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.1
-  sensitivity: 15
-  verticalRotationLimit: 60
-  jumpForce: 5
-  player: {fileID: 1143077722832757165}
+  _player: {fileID: 1143077722832757165}
+  _speed: 0.1
+  _sensitivity: 15
+  _verticalRotationLimit: 60
+  _jumpForce: 5

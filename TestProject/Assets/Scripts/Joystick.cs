@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Joystick : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+public class Joystick : MonoBehaviour, IDragHandler, IEndDragHandler
 {
-    public RectTransform background; // База джойстика
-    public RectTransform stick;     // Стик джойстика
+    public RectTransform background;
+    public RectTransform stick;    
 
     private Vector2 startPos;
 
@@ -13,17 +13,11 @@ public class Joystick : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
         startPos = stick.anchoredPosition;
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        // Ничего не делаем здесь, если нужно
-    }
-
     public void OnDrag(PointerEventData eventData)
     {
         Vector2 pos;
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(background, eventData.position, eventData.pressEventCamera, out pos))
         {
-            // Ограничиваем движение стика внутри круга
             float radius = background.sizeDelta.x / 2 - stick.sizeDelta.x / 2;
             pos = ClampToCircle(pos, radius);
 

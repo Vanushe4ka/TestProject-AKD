@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 using System;
+
 public class DesctopInput : IInput, ITickable
 {
     public Vector2 GetMovementInput()
@@ -20,14 +19,13 @@ public class DesctopInput : IInput, ITickable
         return Input.GetKeyDown(KeyCode.Space);
     }
 
-    public event Action OnJump; // Событие для прыжка
+    public event Action OnJump;
 
     public void Tick()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            OnJump?.Invoke(); // Вызываем событие прыжка
+            OnJump?.Invoke(); 
         }
     }
-
 }

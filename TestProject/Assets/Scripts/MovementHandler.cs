@@ -1,49 +1,53 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 using System;
+
 public class MovementHandler : MonoBehaviour, IDisposable
 {
-    [SerializeField] float speed = 5f;
-    [SerializeField] private float sensitivity = 2f;
-    [SerializeField] private float verticalRotationLimit = 80f;
-    [SerializeField] private float jumpForce;
-    private float _verticalRotation;
+    [SerializeField] private Player _player;
+    [SerializeField] private float _speed = 5f;
+    [SerializeField] private float _sensitivity = 2f;
+    [SerializeField] private float _verticalRotationLimit = 80f;
+    [SerializeField] private float _jumpForce;
 
-    [SerializeField] Player player;
-    IInput _input;
+    private float _verticalRotation;
+    private IInput _input;
+
     [Inject]
     private void Init(IInput input)
     {
         _input = input;
         _input.OnJump += JumpHandle;
     }
+
     public void Dispose()
     {
-        // Отписываемся от события прыжка
         _input.OnJump -= JumpHandle;
     }
+
     private void FixedUpdate()
     {
         MoveHandle();
         LookHandle();
     }
-    void MoveHandle()
+
+    private void MoveHandle()
     {
-        if (player == null || player.rigidbody == null)
+        if (_player == null || _player.Rigidbody == null)
         {
             Debug.LogError("Has not player or Rigidbody");
             return;
         }
 
         Vector2 moveInput = _input.GetMovementInput();
-        Vector3 moveDirection = player.transform.forward * moveInput.y + player.transform.right * moveInput.x;
-        player.rigidbody.MovePosition(moveDirection * speed + player.transform.position);
+        Vector3 moveDirection = _player.transform.forward * moveInput.y + _player.transform.right * moveInput.x;
+
+        _player.Rigidbody.MovePosition(moveDirection * _speed + _player.transform.position);
     }
-    void LookHandle()
+
+    private void LookHandle()
     {
-        if (player == null || player.cameraTransform == null)
+        if (_player == null || _player.CameraTransform == null)
         {
             Debug.LogError("Has not player or camera");
             return;
@@ -51,21 +55,17 @@ public class MovementHandler : MonoBehaviour, IDisposable
 
         Vector2 lookInput = _input.GetLookInput();
 
-        // Поворот камеры по оси X (вертикальный поворот)
-        _verticalRotation -= lookInput.y * sensitivity;
-        _verticalRotation = Mathf.Clamp(_verticalRotation, -verticalRotationLimit, verticalRotationLimit);
-        player.cameraTransform.localEulerAngles = new Vector3(_verticalRotation, 0, 0);
+        _verticalRotation -= lookInput.y * _sensitivity;
+        _verticalRotation = Mathf.Clamp(_verticalRotation, -_verticalRotationLimit, _verticalRotationLimit);
+        _player.CameraTransform.localEulerAngles = new Vector3(_verticalRotation, 0, 0);
 
-        // Поворот игрока по оси Y (горизонтальный поворот)
-        transform.Rotate(Vector3.up * lookInput.x * sensitivity);
+        transform.Rotate(Vector3.up * lookInput.x * _sensitivity);
     }
-    void JumpHandle()
-    {
-        if (player == null || !player.IsGrounded())
-        {
-            return;
-        }
 
-        player.rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+    private void JumpHandle()
+    {
+        if (_player == null || !_player.IsGrounded()) return;
+
+        _player.Rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
     }
 }
